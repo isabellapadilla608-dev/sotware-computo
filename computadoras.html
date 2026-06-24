@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoLab | Computadoras</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d6efd;
+            --dark-bg: #121212;
+            --light-bg: #f8f9fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body { background-color: var(--light-bg); color: var(--text-dark); }
+
+        /* NAVEGACIÓN */
+        header {
+            background-color: var(--dark-bg); padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { color: var(--text-light); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: var(--text-light); text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: var(--primary-color); }
+        .btn-carrito { background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; font-weight: 600; }
+
+        /* SECCIÓN DE PRODUCTOS */
+        .container { padding: 3rem 5%; }
+        .titulo-seccion { font-size: 2rem; margin-bottom: 2rem; text-align: center; }
+        
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* TARJETA DE PRODUCTO */
+        .producto-card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;
+            transition: transform 0.3s;
+        }
+        .producto-card:hover { transform: translateY(-5px); }
+        .producto-img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; margin-bottom: 1rem; }
+        .producto-nombre { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .producto-desc { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
+        .producto-precio { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1.5rem; }
+        
+        .btn-comprar {
+            background-color: var(--dark-bg); color: white; border: none;
+            padding: 0.8rem 1.5rem; width: 100%; border-radius: 5px;
+            font-weight: 600; cursor: pointer; transition: background 0.3s;
+        }
+        .btn-comprar:hover { background-color: var(--primary-color); }
+        
+        /* Notificación de agregado */
+        .notificacion {
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: #28a745; color: white; padding: 1rem;
+            border-radius: 5px; display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Tecno<span>Lab</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="computadoras.html">Computadoras</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="licencias.html">Licencias</a></li>
+                <li><a href="ofertas.html">Ofertas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li>
+                    <a href="carrito.html" class="btn-carrito">
+                        🛒 Carrito (<span id="cart-count">0</span>)
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="titulo-seccion">Catálogo de Computadoras</h1>
+        
+        <div class="grid-productos">
+            <article class="producto-card">
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=500&q=80" alt="Lenovo IdeaPad 3" class="producto-img">
+                <h2 class="producto-nombre">Laptop Lenovo IdeaPad 3</h2>
+                <p class="producto-desc">Ryzen 5, 16 GB RAM, SSD 512 GB</p>
+                <p class="producto-precio">$11,999 MXN</p>
+                <button class="btn-comprar" onclick="agregarAlCarrito('Laptop Lenovo IdeaPad 3', 11999)">Añadir al carrito</button>
+            </article>
+
+            <article class="producto-card">
+                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=500&q=80" alt="HP Pavilion" class="producto-img">
+                <h2 class="producto-nombre">Laptop HP Pavilion 15</h2>
+                <p class="producto-desc">Intel Core i7, 8 GB RAM, SSD 256 GB</p>
+                <p class="producto-precio">$14,500 MXN</p>
+                <button class="btn-comprar" onclick="agregarAlCarrito('Laptop HP Pavilion 15', 14500)">Añadir al carrito</button>
+            </article>
+        </div>
+    </main>
+
+    <div id="mensaje-exito" class="notificacion">
+        ✅ Producto añadido al carrito
+    </div>
+
+    <script>
+        // 1. Leer el carrito de la memoria del navegador
+        let carrito = JSON.parse(localStorage.getItem('tecnolab_carrito')) || [];
+
+        // 2. Función para actualizar el número arriba en el menú
+        function actualizarContadorCarrito() {
+            document.getElementById('cart-count').innerText = carrito.length;
+        }
+
+        // 3. Función principal: Añadir al carrito
+        function agregarAlCarrito(nombreProducto, precioProducto) {
+            // Creamos un objeto con los datos del producto
+            const producto = {
+                nombre: nombreProducto,
+                precio: precioProducto
+            };
+
+            // Lo metemos al arreglo del carrito
+            carrito.push(producto);
+
+            // Guardamos el carrito actualizado en la memoria (localStorage)
+            localStorage.setItem('tecnolab_carrito', JSON.stringify(carrito));
+
+            // Actualizamos el número visual
+            actualizarContadorCarrito();
+
+            // Mostramos una alerta bonita
+            mostrarNotificacion();
+        }
+
+        // 4. Función para mostrar el cartelito verde de éxito
+        function mostrarNotificacion() {
+            const alerta = document.getElementById('mensaje-exito');
+            alerta.style.display = 'block';
+            
+            // Ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                alerta.style.display = 'none';
+            }, 2000);
+        }
+
+        // 5. Al cargar la página, asegurarnos de que el contador muestre la cantidad correcta
+        document.addEventListener('DOMContentLoaded', actualizarContadorCarrito);
+    </script>
+</body>
+</html>
