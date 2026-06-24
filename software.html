@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoLab | Software de Gestión e Inventario</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d6efd;
+            --dark-bg: #121212;
+            --light-bg: #f8f9fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--light-bg); color: var(--text-dark); }
+
+        /* NAVEGACIÓN */
+        header {
+            background-color: var(--dark-bg); padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { color: var(--text-light); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: var(--text-light); text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: var(--primary-color); }
+        .btn-carrito { background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; font-weight: 600; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container { padding: 2rem 5%; }
+        .titulo-seccion { font-size: 2rem; margin-bottom: 1.5rem; text-align: center; }
+
+        /* BARRA DE FILTROS Y BÚSQUEDA (Gestión de Catálogo) */
+        .gestion-bar {
+            background: white; padding: 1rem; border-radius: 8px;
+            margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center;
+        }
+        .buscador { padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 5px; width: 300px; }
+        .filtros select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px; background: white; }
+
+        /* GRID DE SOFTWARE */
+        .grid-software {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
+
+        /* TARJETA DE SOFTWARE */
+        .software-card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .badge {
+            background: #e2e8f0; color: #4a5568; padding: 0.2rem 0.6rem; 
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; width: max-content; margin-bottom: 0.5rem;
+        }
+        .badge-licencia { background: #e0f2fe; color: #0369a1; }
+        .software-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .software-meta { font-size: 0.85rem; color: #718096; margin-bottom: 1rem; }
+        .software-precio { font-size: 1.6rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; }
+        
+        .btn-comprar {
+            background-color: var(--dark-bg); color: white; border: none;
+            padding: 0.8rem 1.5rem; width: 100%; border-radius: 5px;
+            font-weight: 600; cursor: pointer; transition: background 0.3s;
+        }
+        .btn-comprar:hover { background-color: var(--primary-color); }
+
+        /* Notificación */
+        .notificacion {
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: #28a745; color: white; padding: 1rem;
+            border-radius: 5px; display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Tecno<span>Lab</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="computadoras.html">Computadoras</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="licencias.html">Licencias</a></li>
+                <li><a href="ofertas.html">Ofertas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li>
+                    <a href="carrito.html" class="btn-carrito">
+                        🛒 Carrito (<span id="cart-count">0</span>)
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="titulo-seccion">Catálogo de Software</h1>
+
+        <div class="gestion-bar">
+            <input type="text" id="inputBuscar" class="buscador" placeholder="Buscar software por nombre..." onkeyup="filtrarCatalogo()">
+            
+            <div class="filtros">
+                <select id="filtroCategoria" onchange="filtrarCatalogo()">
+                    <option value="todos">Todas las categorías</option>
+                    <option value="Antivirus">Antivirus</option>
+                    <option value="Ofimática">Suites de Oficina</option>
+                    <option value="Diseño">Diseño Gráfico</option>
+                    <option value="Programación">Programación</option>
+                    <option value="Sistemas Operativos">Sistemas Operativos</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-software" id="contenedorSoftware">
+            
+            <div class="software-card" data-nombre="antivirus kaspersky total security" data-categoria="Antivirus">
+                <div class="software-info">
+                    <span class="badge">Antivirus</span>
+                    <span class="badge badge-licencia">Licencia Anual</span>
+                    <h3>Kaspersky Total Security</h3>
+                    <p class="software-meta">Versión 2026 | Stock: 45 disponibles</p>
+                    <p style="color: #555; font-size: 0.9rem; margin-bottom: 1rem;">Protección avanzada en tiempo real contra virus, malware y ransomware para 1 PC.</p>
+                </div>
+                <div>
+                    <div class="software-precio">$799 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Kaspersky Total Security', 799)">Añadir al carrito</button>
+                </div>
+            </div>
+
+            <div class="software-card" data-nombre="microsoft office 2026 home business" data-categoria="Ofimática">
+                <div class="software-info">
+                    <span class="badge">Ofimática</span>
+                    <span class="badge badge-licencia">Permanente</span>
+                    <h3>Microsoft Office 2026</h3>
+                    <p class="software-meta">Versión Home & Business | Stock: 12 disponibles</p>
+                    <p style="color: #555; font-size: 0.9rem; margin-bottom: 1rem;">Incluye Word, Excel, PowerPoint y Outlook. Activación de por vida mediante cuenta.</p>
+                </div>
+                <div>
+                    <div class="software-precio">$4,899 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Microsoft Office 2026', 4899)">Añadir al carrito</button>
+                </div>
+            </div>
+
+            <div class="software-card" data-nombre="adobe photoshop creative cloud" data-categoria="Diseño">
+                <div class="software-info">
+                    <span class="badge">Diseño</span>
+                    <span class="badge badge-licencia">Mensual</span>
+                    <h3>Adobe Photoshop CC</h3>
+                    <p class="software-meta">Versión 2026 | Stock: 100+ disponibles</p>
+                    <p style="color: #555; font-size: 0.9rem; margin-bottom: 1rem;">El software de edición fotográfica estándar de la industria. Suscripción en la nube.</p>
+                </div>
+                <div>
+                    <div class="software-precio">$450 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Adobe Photoshop CC', 450)">Añadir al carrito</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="mensaje-exito" class="notificacion">
+        ✅ Software añadido al carrito
+    </div>
+
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('tecnolab_carrito')) || [];
+
+        function actualizarContadorCarrito() {
+            document.getElementById('cart-count').innerText = carrito.length;
+        }
+
+        function agregarAlCarrito(nombreProducto, precioProducto) {
+            const producto = { nombre: nombreProducto, precio: precioProducto };
+            carrito.push(producto);
+            localStorage.setItem('tecnolab_carrito', JSON.stringify(carrito));
+            actualizarContadorCarrito();
+            mostrarNotificacion();
+        }
+
+        function mostrarNotificacion() {
+            const alerta = document.getElementById('mensaje-exito');
+            alerta.style.display = 'block';
+            setTimeout(() => { alerta.style.display = 'none'; }, 2000);
+        }
+
+        // FUNCIÓN DE FILTRADO Y BÚSQUEDA EN TIEMPO REAL
+        function filtrarCatalogo() {
+            const textoBuscar = document.getElementById('inputBuscar').value.toLowerCase();
+            const categoriaSeleccionada = document.getElementById('filtroCategoria').value;
+            const tarjetas = document.getElementsByClassName('software-card');
+
+            for (let i = 0; i < tarjetas.length; i++) {
+                const nombreProducto = tarjetas[i].getAttribute('data-nombre');
+                const categoriaProducto = tarjetas[i].getAttribute('data-categoria');
+
+                // Verificar si coincide con la búsqueda de texto
+                const coincideTexto = nombreProducto.includes(textoBuscar);
+                // Verificar si coincide con el selector de categorías
+                const coincideCategoria = (categoriaSeleccionada === 'todos' || categoriaProducto === categoriaSeleccionada);
+
+                if (coincideTexto && coincideCategoria) {
+                    tarjetas[i].style.display = 'flex'; // Muestra la tarjeta si cumple ambas
+                } else {
+                    tarjetas[i].style.display = 'none'; // La oculta si no cumple
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', actualizarContadorCarrito);
+    </script>
+</body>
+</html>
