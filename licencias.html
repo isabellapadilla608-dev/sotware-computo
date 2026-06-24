@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoLab | Licencias Digitales</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d6efd;
+            --dark-bg: #121212;
+            --light-bg: #f8f9fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--light-bg); color: var(--text-dark); }
+
+        /* NAVEGACIÓN */
+        header {
+            background-color: var(--dark-bg); padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { color: var(--text-light); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: var(--text-light); text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: var(--primary-color); }
+        .btn-carrito { background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; font-weight: 600; }
+
+        .container { padding: 2rem 5%; }
+        
+        /* INDICADORES CLAVE (PANEL DE CONTROL SOLICITADO) */
+        .dashboard-mini {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;
+        }
+        .kpi-card {
+            background: white; padding: 1.2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+        .kpi-card.success { border-left-color: var(--success); }
+        .kpi-card.warning { border-left-color: var(--warning); }
+        .kpi-titulo { font-size: 0.85rem; text-transform: uppercase; color: #6c757d; font-weight: 600; }
+        .kpi-valor { font-size: 1.8rem; font-weight: 700; margin-top: 0.3rem; }
+
+        /* NOTIFICACIONES */
+        .panel-notificaciones {
+            background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;
+        }
+
+        /* GRID DE LICENCIAS */
+        .grid-licencias {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
+        .licencia-card {
+            background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e9ecef;
+        }
+        .licencia-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+        .tipo-entrega { font-size: 0.75rem; color: var(--success); font-weight: bold; text-transform: uppercase; }
+        .licencia-precio { font-size: 1.6rem; font-weight: 700; color: var(--dark-bg); margin: 1rem 0; }
+
+        .btn-comprar {
+            background-color: var(--primary-color); color: white; border: none;
+            padding: 0.8rem 1.5rem; width: 100%; border-radius: 5px;
+            font-weight: 600; cursor: pointer; transition: background 0.3s;
+        }
+        .btn-comprar:hover { background-color: #0b5ed7; }
+
+        .notificacion-float {
+            position: fixed; bottom: 20px; right: 20px; background-color: var(--success);
+            color: white; padding: 1rem; border-radius: 5px; display: none; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Tecno<span>Lab</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="computadoras.html">Computadoras</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="licencias.html">Licencias</a></li>
+                <li><a href="ofertas.html">Ofertas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li>
+                    <a href="carrito.html" class="btn-carrito">
+                        🛒 Carrito (<span id="cart-count">0</span>)
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section class="dashboard-mini">
+            <div class="kpi-card">
+                <div class="kpi-titulo">Ventas del Día</div>
+                <div class="kpi-valor">$24,350 MXN</div>
+            </div>
+            <div class="kpi-card success">
+                <div class="kpi-titulo">Licencias Activas</div>
+                <div class="kpi-valor">1,240 Abs</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-titulo">Productos más vendidos</div>
+                <div class="kpi-valor">Windows 11 Pro</div>
+            </div>
+        </section>
+
+        <div class="panel-notificaciones">
+            <span>⚠️ <strong>Notificación:</strong> Tienes 3 licencias próximas a expirar en el catálogo de clientes.</span>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Licencias Digitales Disponibles</h2>
+
+        <div class="grid-licencias">
+            
+            <div class="licencia-card">
+                <div>
+                    <div class="licencia-header">
+                        <span class="tipo-entrega">⚡ Entrega Inmediata</span>
+                        <span style="font-size: 0.8rem; background: #f1f3f5; padding: 0.2rem 0.5rem; border-radius: 4px;">OEM</span>
+                    </div>
+                    <h3>Windows 11 Professional</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Clave de activación digital de 25 caracteres. Activación permanente para 1 PC de arquitectura de 64 bits.</p>
+                </div>
+                <div>
+                    <div class="licencia-precio">$399 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Licencia Windows 11 Pro', 399)">Añadir al carrito</button>
+                </div>
+            </div>
+
+            <div class="licencia-card">
+                <div>
+                    <div class="licencia-header">
+                        <span class="tipo-entrega">⚡ Entrega Inmediata</span>
+                        <span style="font-size: 0.8rem; background: #f1f3f5; padding: 0.2rem 0.5rem; border-radius: 4px;">Retail</span>
+                    </div>
+                    <h3>Project Professional 2026</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Licencia digital para la suite de gestión de proyectos. Vinculable directamente a tu cuenta Microsoft corporativa o personal.</p>
+                </div>
+                <div>
+                    <div class="licencia-precio">$1,250 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Licencia Project Pro 2026', 1250)">Añadir al carrito</button>
+                </div>
+            </div>
+
+            <div class="licencia-card">
+                <div>
+                    <div class="licencia-header">
+                        <span class="tipo-entrega">⚡ Entrega Inmediata</span>
+                        <span style="font-size: 0.8rem; background: #f1f3f5; padding: 0.2rem 0.5rem; border-radius: 4px;">Suscripción</span>
+                    </div>
+                    <h3>Autodesk AutoCAD 2026</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Licencia original por un año (12 meses) para estudiantes o profesionales del diseño arquitectónico e ingeniería.</p>
+                </div>
+                <div>
+                    <div class="licencia-precio">$3,100 MXN</div>
+                    <button class="btn-comprar" onclick="agregarAlCarrito('Licencia AutoCAD 2026 (1 Año)', 3100)">Añadir al carrito</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="mensaje-exito" class="notificacion-float">
+        ✅ Licencia agregada al carrito
+    </div>
+
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('tecnolab_carrito')) || [];
+
+        function actualizarContadorCarrito() {
+            document.getElementById('cart-count').innerText = carrito.length;
+        }
+
+        function agregarAlCarrito(nombreProducto, precioProducto) {
+            const producto = { nombre: nombreProducto, precio: precioProducto };
+            carrito.push(producto);
+            localStorage.setItem('tecnolab_carrito', JSON.stringify(carrito));
+            actualizarContadorCarrito();
+            
+            const alerta = document.getElementById('mensaje-exito');
+            alerta.style.display = 'block';
+            setTimeout(() => { alerta.style.display = 'none'; }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', actualizarContadorCarrito);
+    </script>
+</body>
+</html>
