@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoLab | Tu Carrito</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        :root { --primary-color: #0d6efd; --dark-bg: #121212; --light-bg: #f8f9fa; --text-dark: #333333; --text-light: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--light-bg); color: var(--text-dark); }
+        header { background-color: var(--dark-bg); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: var(--text-light); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: var(--text-light); text-decoration: none; }
+        
+        .container { padding: 3rem 5%; max-width: 800px; margin: 0 auto; }
+        .lista-items { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .item-carrito { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #eee; }
+        .total-container { display: flex; justify-content: space-between; margin-top: 1.5rem; font-size: 1.4rem; font-weight: 700; }
+        
+        .btn-checkout { background-color: #28a745; color: white; border: none; padding: 1rem; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1.5rem; }
+        .btn-vaciar { background: none; border: none; color: #dc3545; cursor: pointer; font-weight: 600; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Tecno<span>Lab</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="computadoras.html">Computadoras</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="licencias.html">Licencias</a></li>
+                <li><a href="ofertas.html">Ofertas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Tu Carrito de Compras</h2><br>
+        <div class="lista-items">
+            <div id="elementos-carrito">
+                </div>
+            
+            <div class="total-container">
+                <span>Total:</span>
+                <span id="precio-total">$0 MXN</span>
+            </div>
+
+            <button class="btn-checkout" onclick="procesarCompra()">Confirmar Compra</button>
+            <button class="btn-vaciar" onclick="vaciarCarrito()">🗑️ Vaciar Carrito</button>
+        </div>
+    </main>
+
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('tecnolab_carrito')) || [];
+
+        function renderizarCarrito() {
+            const contenedor = document.getElementById('elementos-carrito');
+            const totalTxt = document.getElementById('precio-total');
+            
+            if (carrito.length === 0) {
+                contenedor.innerHTML = '<p style="color:#777;">El carrito está vacío.</p>';
+                totalTxt.innerText = '$0 MXN';
+                return;
+            }
+
+            contenedor.innerHTML = '';
+            let sumaTotal = 0;
+
+            carrito.forEach((item) => {
+                contenedor.innerHTML += `
+                    <div class="item-carrito">
+                        <span>${item.nombre}</span>
+                        <strong>$${item.precio.toLocaleString()} MXN</strong>
+                    </div>
+                `;
+                sumaTotal += item.precio;
+            });
+
+            totalTxt.innerText = `$${sumaTotal.toLocaleString()} MXN`;
+        }
+
+        function vaciarCarrito() {
+            localStorage.removeItem('tecnolab_carrito');
+            carrito = [];
+            renderizarCarrito();
+        }
+
+        function procesarCompra() {
+            if(carrito.length === 0) {
+                alert('Tu carrito está vacío.');
+                return;
+            }
+            alert('¡Pedido procesado con éxito! Se ha generado tu orden.');
+            vaciarCarrito();
+        }
+
+        document.addEventListener('DOMContentLoaded', renderizarCarrito);
+    </script>
+</body>
+</html>
