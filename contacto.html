@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoLab | Contacto</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        :root { --primary-color: #0d6efd; --dark-bg: #121212; --light-bg: #f8f9fa; --text-dark: #333333; --text-light: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--light-bg); }
+        header { background-color: var(--dark-bg); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: var(--text-light); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: var(--text-light); text-decoration: none; }
+        .btn-carrito { background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; }
+        
+        .form-container { max-width: 500px; margin: 3rem auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 5px; }
+        .btn-enviar { background: var(--primary-color); color: white; border: none; padding: 0.8rem 1.5rem; width: 100%; border-radius: 5px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Tecno<span>Lab</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="computadoras.html">Computadoras</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="licencias.html">Licencias</a></li>
+                <li><a href="ofertas.html">Ofertas</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="carrito.html" class="btn-carrito">🛒 Carrito (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <h2>Ponte en contacto</h2>
+        <p style="color:#666; margin-bottom: 1.5rem;">Soporte corporativo y cotizaciones especiales.</p>
+        <form onsubmit="alert('Mensaje enviado con éxito'); return false;">
+            <div class="form-group"><label>Nombre Completo</label><input type="text" required></div>
+            <div class="form-group"><label>Correo Electrónico</label><input type="email" required></div>
+            <div class="form-group"><label>Mensaje</label><textarea rows="4" required></textarea></div>
+            <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+        </form>
+    </main>
+
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('tecnolab_carrito')) || [];
+        document.getElementById('cart-count').innerText = carrito.length;
+    </script>
+</body>
+</html>
